@@ -1,0 +1,60 @@
+// #include "Arduino.h"
+#include <ESP8266WiFi.h>
+
+#ifdef DEBUG_MODE
+#include "debug.h"
+#endif
+
+struct wifi_connection 
+{
+   char ssid[24]; 
+   char password[24];
+   unsigned int is_connected; 
+};
+
+// the setup routine runs once when you press reset:
+void setup() 
+{
+  #ifdef DEBUG_MODE
+  Serial.begin(9600);
+  #endif
+  Serial.begin(115200);
+
+
+  pinMode(D0, OUTPUT);
+
+  unsigned int i; 
+
+  for (i=0; i < 10; i++)
+  { 
+    digitalWrite(D0, HIGH );
+    delay(500);
+    digitalWrite(D0, LOW);
+    delay(500);
+  }
+
+  Serial.println();
+
+  wifi_connection cnxn  = {"titmarsh","alantitmarsh"};
+  WiFi.begin(cnxn.ssid, cnxn.password);
+
+  Serial.print("Connecting");
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println();
+
+  Serial.print("Connected, IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() { 
+
+  digitalWrite(D0, HIGH );
+  delay(1000);
+  digitalWrite(D0, LOW);
+  delay(1000);
+
+}
